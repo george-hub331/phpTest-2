@@ -45,7 +45,7 @@ class articleController extends Controller
         // show a list of articles, 5 per page
         $articles = Articles::latest();
 
-        if($articles->count()){
+        if($articles->first()){
             $all = Articles::paginate(
                 $perPage = 5,
                 $columns = ['id', 'subject', 'likes', 'comments', 'views', 'created_at'],
@@ -103,8 +103,8 @@ class articleController extends Controller
                 'subject'=>$article->subject,
                 'id' => $article->id,
                 'body' => substr($article->body, 0, 100),
-                'views'=> count(json_decode($article->views, true)),
-                'likes' => count(json_decode($article->views, true)),
+                'views'=> $article->views,
+                'likes' => $article->likes,
                 'tags' => $article->tags,
                 'comments' => $article->comments
             ];
@@ -229,15 +229,16 @@ class articleController extends Controller
 
         if ($article) {
 
-            $views = json_decode($article->views, true);
+            $views = $article->viewsIp ? json_decode($article->viewsIp, true) : [];
             $t = true;
+            if(count($views)){
             for($i = 0; $i < count($views); $i++){
                 if ($views[$i] == request()->getClientIp()) {
                     $t = false;
                     break;
                 }
             }
-
+        }
         if($t){
             $views[] = request()->getClientIp();
 
@@ -288,15 +289,16 @@ class articleController extends Controller
         $article = Articles::find($id)->first();
 
         if ($article) {
-            $likes = json_decode($article->likes, true);
+            $likes = $article->likesIp ? json_decode($article->likesIp, true) : [];
             $t = true;
+            if(count($likes)){
             for ($i = 0; $i < count($likes); $i++) {
                 if ($likes[$i] == request()->getClientIp()) {
                     $t = false;
                     break;
                 }
             }
-
+        }
             if ($t) {
                 $likes[] = request()->getClientIp();
 
