@@ -170,7 +170,7 @@ class articleController extends Controller
 
         if($article){
             $validate = Validator::make($request->all(), [
-                'comment' => 'required|text|min:50',
+                'comment' => 'required|min:50',
                 'name' => 'required'
             ]);
 
@@ -178,7 +178,7 @@ class articleController extends Controller
                 return $validate->messages();
             }
 
-            $comments = json_decode($article->comments, true);
+            $comments = $article->comments ? json_decode($article->comments, true) : [];
 
             $comments[] = ['name'=>$request->name, 'comment'=>$request->comment];
 
@@ -225,7 +225,7 @@ class articleController extends Controller
      */
     public function views($id){
         // to update the number of views
-        $article = Articles::find($id)->first();
+        $article = Articles::whereId($id)->first();
 
         if ($article) {
 
@@ -239,6 +239,7 @@ class articleController extends Controller
                 }
             }
         }
+
         if($t){
             $views[] = request()->getClientIp();
 
@@ -285,12 +286,15 @@ class articleController extends Controller
      */
     public function likes($id)
     {
+
         // update the number of likes
-        $article = Articles::find($id)->first();
+        $article = Articles::whereId($id)->first();
 
         if ($article) {
-            $likes = $article->likesIp ? json_decode($article->likesIp, true) : [];
+
+            $likes = ($article->likesIp !== null || !empty($article->likesIp)) ? json_decode($article->likesIp, true) : [];
             $t = true;
+
             if(count($likes)){
             for ($i = 0; $i < count($likes); $i++) {
                 if ($likes[$i] == request()->getClientIp()) {
