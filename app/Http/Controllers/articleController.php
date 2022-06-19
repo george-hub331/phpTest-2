@@ -43,10 +43,10 @@ class articleController extends Controller
      */
     public function index() {
         // show a list of articles, 5 per page
-        $articles = articles::latest();
+        $articles = Articles::latest();
 
         if($articles->count()){
-            $all = articles::paginate(
+            $all = Articles::paginate(
                 $perPage = 5,
                 $columns = ['id', 'subject', 'likes', 'comments', 'views', 'created_at'],
                 $pageName = 'list'
@@ -95,7 +95,7 @@ class articleController extends Controller
      */
     public function viewArticle($id){
         //views article based on the id provided
-        $article = articles::find($id)->first();
+        $article = Articles::find($id)->first();
 
         if($article){
 
@@ -166,7 +166,7 @@ class articleController extends Controller
         // method for collecting and saving in the database
 
         sleep(600);
-        $article = articles::find($id)->first();
+        $article = Articles::find($id)->first();
 
         if($article){
             $validate = Validator::make($request->all(), [
@@ -225,7 +225,7 @@ class articleController extends Controller
      */
     public function views($id){
         // to update the number of views
-        $article = articles::find($id)->first();
+        $article = Articles::find($id)->first();
 
         if ($article) {
 
@@ -285,7 +285,7 @@ class articleController extends Controller
     public function likes($id)
     {
         // update the number of likes
-        $article = articles::find($id)->first();
+        $article = Articles::find($id)->first();
 
         if ($article) {
             $likes = json_decode($article->likes, true);

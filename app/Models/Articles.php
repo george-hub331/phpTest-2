@@ -13,7 +13,9 @@ class Articles extends Model
         'subject',
         'body',
         'likes',
+        'likesIp',
         'views',
+        'viewsIp',
         'tags',
         'comments'
     ];
