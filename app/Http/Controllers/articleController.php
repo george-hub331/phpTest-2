@@ -183,7 +183,7 @@ class articleController extends Controller
             $comments[] = ['name'=>$request->name, 'comment'=>$request->comment];
 
             $article->update([
-                'comment' => json_encode($comments)
+                'comments' => json_encode($comments)
             ]);
 
             return [
