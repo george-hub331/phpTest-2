@@ -24,9 +24,5 @@ Route::post('/articles/{id}/comment', [articleController::class, 'comment'])->na
 
 Route::get('/articles/{id}/view', [articleController::class, 'views'])->name('articles.views');
 
-Route::get('/articles/{id}/like', [articleController::class, 'views'])->name('articles.views');
-
-
-
-
+Route::get('/articles/{id}/like', [articleController::class, 'likes'])->name('articles.likes');
 

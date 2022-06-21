@@ -9,16 +9,7 @@ class Articles extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'subject',
-        'body',
-        'likes',
-        'likesIp',
-        'views',
-        'viewsIp',
-        'tags',
-        'comments'
-    ];
+    protected $guarded = [];
 
     protected $table = 'articles';
 
